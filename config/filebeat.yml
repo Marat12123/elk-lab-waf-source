@@ -1,0 +1,12 @@
+yaml
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/nginx/modsec_audit.log
+  fields:
+    type: syslog
+  fields_under_root: true
+
+output.logstash:
+  hosts: ["192.168.56.10:5044"]
