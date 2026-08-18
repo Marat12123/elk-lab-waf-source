@@ -1,0 +1,25 @@
+```yaml
+services:
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: dvwa
+    networks:
+      - waf-net
+
+  waf:
+    image: owasp/modsecurity-crs:nginx
+    container_name: waf-nginx
+    ports:
+      - "80:80"
+    environment:
+      - BACKEND=http://dvwa:80
+    networks:
+      - waf-net
+    volumes:
+      - ./logs:/var/log/modsecurity/
+    extra_hosts:
+      - "dvwa:172.18.0.2"   # замените на реальный IP контейнера dvwa
+
+networks:
+  waf-net:
+    driver: bridge
